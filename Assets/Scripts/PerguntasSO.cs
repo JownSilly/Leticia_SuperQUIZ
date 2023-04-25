@@ -27,7 +27,7 @@ public class PerguntasSO : ScriptableObject
     {
         return alternatives;
     }
-    public int getRightAnswer()
+    public int GetRightAnswer()
     {
         return rightAnswer;
     }
