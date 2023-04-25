@@ -1,0 +1,115 @@
+{
+  "quiz_title": "Quiz: História dos Jogos Digitais",
+  "questoes": [
+    {
+      "id": "questao-1",
+      "enunciado": "Qual foi o primeiro jogo de sucesso da empresa Atari?",
+      "alternativas": [
+        "Space Invaders",
+        "Pong",
+        "Pac-Man",
+        "Donkey Kong"
+      ],
+      "respostaCorreta": 1
+    },
+    {
+      "id": "questao-2",
+      "enunciado": "Em que ano foi lançado o primeiro console de jogos da Sony, o PlayStation?",
+      "alternativas": [
+        "1992",
+        "1994",
+        "1996",
+        "1998"
+      ],
+      "respostaCorreta": 1
+    },
+    {
+      "id": "questao-3",
+      "enunciado": "Qual foi o primeiro jogo de RPG (Role-Playing Game) para computador?",
+      "alternativas": [
+        "Wizardry",
+        "Ultima",
+        "Dungeons & Dragons",
+        "Final Fantasy"
+      ],
+      "respostaCorreta": 0
+    },
+    {
+      "id": "questao-4",
+      "enunciado": "Qual é o nome do personagem principal da série de jogos 'The Legend of Zelda'?",
+      "alternativas": [
+        "Mario",
+        "Sonic",
+        "Link",
+        "Samus"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "id": "questao-5",
+      "enunciado": "Qual foi o primeiro jogo a utilizar gráficos em 3D?",
+      "alternativas": [
+        "Doom",
+        "Wolfenstein 3D",
+        "Quake",
+        "Super Mario 64"
+      ],
+      "respostaCorreta": 3
+    },
+    {
+      "id": "questao-6",
+      "enunciado": "Em que ano foi lançado o jogo 'Tetris' para computador?",
+      "alternativas": [
+        "1984",
+        "1986",
+        "1988",
+        "1990"
+      ],
+      "respostaCorreta": 2
+    },
+    {
+      "id": "questao-7",
+      "enunciado": "Qual é o nome do jogo de estratégia em tempo real da Blizzard Entertainment?",
+      "alternativas": [
+        "Warcraft",
+        "StarCraft",
+        "Diablo",
+        "Overwatch"
+      ],
+      "respostaCorreta": 1
+    },
+    {
+      "id": "questao-8",
+      "enunciado": "Em que ano foi lançado o jogo 'Super Mario Bros.' para o console Nintendo Entertainment System (NES)?",
+      "alternativas": [
+        "1983",
+        "1985",
+        "1987",
+        "1989"
+      ],
+      "respostaCorreta": 1
+    },
+    {
+      "id": "questao-9",
+      "enunciado": "Qual é o nome do jogo de simulação de vida em que os personagens falam uma linguagem própria e criada para o jogo?",
+      "alternativas": [
+        "The Sims",
+        "Animal Crossing",
+        "Second Life",
+        "SimCity"
+      ],
+      "respostaCorreta": 0
+    },
+    {
+      "id": "questao-10",
+      "enunciado": "Qual é o nome do primeiro jogo de corrida com perspectiva em primeira pessoa?",
+      "alternativas": [
+        "Pole Position",
+        "Out Run",
+        "Rad Racer",
+        "Virtua Racing"
+      ],
+      "respostaCorreta": 2
+    }
+  ]
+}
