@@ -31,5 +31,4 @@ public class PerguntasSO : ScriptableObject
     {
         return rightAnswer;
     }
-
 }
