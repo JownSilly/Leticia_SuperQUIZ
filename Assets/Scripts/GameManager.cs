@@ -7,31 +7,38 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Questions")]
-    [SerializeField] private PerguntasSO currentQuestion;
+    [Header("Perguntas Visao")]
+    private PerguntasSO currentQuestion;
     [SerializeField] private PerguntasSO[] allQuestionScriptableObj;
     [SerializeField] private TextMeshProUGUI statementText;
     [SerializeField] private GameObject[] alternativeTextTMP;
-    [Header ("Sprites")]
-    [SerializeField] private Sprite SpriteStandardAlternative;
-    [SerializeField] private Sprite SpriteRightAlternative;
-    [SerializeField] private Sprite SpriteWrongAlternative;
-    [Header("Controller")]
+    [Header ("Sprites Alternatives")]
+    [SerializeField] private Sprite spriteStandardAlternative;
+    [SerializeField] private Sprite spriteRightAlternative;
+    [SerializeField] private Sprite spriteWrongAlternative;
+    [Header("Visual Alert")]
+    [SerializeField] private Sprite spriteVisualAlertWrong;
+    [SerializeField] private Sprite spriteVisualAlertRight;
+    [SerializeField] private TextMeshProUGUI textVisualAlert;
+    [Header("Variaveis Controller")]
     private Timer timer;
-    private int questionPosition;
-    private int correctly_Answers;
-    [SerializeField] private TextMeshProUGUI EndGameMessageTXT;
+    private int index;
+    private int points;
+    private bool isRight;
+    [Header("Screen Change")]
     [SerializeField] private GameObject[] screens;
+    [SerializeField] private TextMeshProUGUI endGameMessageTXT;
     void Start()
     {
-        screens[0].SetActive(true);
-        screens[1].SetActive(false);
+        index = 0;
+        points = 0;
+        isRight = false;
+        //screens[0].SetActive(true);
+        screens[1].SetActive(true);
+        screens[2].GetComponent<Canvas>().gameObject.SetActive(false);
         timer = GetComponent<Timer>();
         timer.RegistrarParada(OnParadaTimer);
-        
-        questionPosition = 0;
-        correctly_Answers = 0;
-
+        currentQuestion = allQuestionScriptableObj[index];
         statementText.SetText(currentQuestion.GetStatements());
         string[] alternatives = currentQuestion.GetAlternatives();
         for(int i = 0; i < alternatives.Length; i++)
@@ -44,22 +51,26 @@ public class GameManager : MonoBehaviour
     public void HandleOption(int selectedAlternative)
     {
         DisableOptionButtons();
-        PararTimer();
         int rightAnswer = currentQuestion.GetRightAnswer();
         Image imageAlt = alternativeTextTMP[selectedAlternative].GetComponent<Image>();
         if (selectedAlternative == rightAnswer)
         {
-            ChangeButtonSprite(imageAlt, SpriteRightAlternative);
-            correctly_Answers++;
+            ChangeSprite(imageAlt, spriteRightAlternative);
             Debug.Log("ganhou");
+            points++;
+            isRight = true;
         }
         else
         {
             Image imageAltRight = alternativeTextTMP[rightAnswer].GetComponent<Image>();
-            ChangeButtonSprite(imageAlt, SpriteWrongAlternative);
-            ChangeButtonSprite(imageAltRight, SpriteRightAlternative);
+            ChangeSprite(imageAlt, spriteWrongAlternative);
+            ChangeSprite(imageAltRight, spriteRightAlternative);
             Debug.Log("perdeu");
+            isRight = false;
         }
+        
+        PararTimer();
+
     }
     // desabilita os botoes
     public void DisableOptionButtons()
@@ -78,12 +89,12 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < alternativeTextTMP.Length; i++)
         {
             alternativeTextTMP[i].GetComponent<Image>();
-            ChangeButtonSprite(alternativeTextTMP[i].GetComponent<Image>(), SpriteStandardAlternative);
+            ChangeSprite(alternativeTextTMP[i].GetComponent<Image>(), spriteStandardAlternative);
         }
         timer.Zerar();
     }
     //troca o sprite dos botoes
-    public void ChangeButtonSprite(Image image, Sprite sprite)
+    public void ChangeSprite(Image image, Sprite sprite)
     {
         image.sprite = sprite;
     }
@@ -93,33 +104,53 @@ public class GameManager : MonoBehaviour
     }
     private void OnParadaTimer()
     {
-        Debug.Log(questionPosition);
-        if (questionPosition >= allQuestionScriptableObj.Length - 1)
+        if (timer.GetCurrentTime() > timer.GetMaxTime())
+            isRight = false;
+            DisableOptionButtons();
+        var visualBoxAlertGameObject = screens[2];
+        visualBoxAlertGameObject.GetComponent<Canvas>().gameObject.SetActive(true);
+        var imagemAlert = visualBoxAlertGameObject.GetComponentInChildren<Image>();
+        
+        
+        //verifica se ouve clique
+        if (isRight) 
         {
-            Invoke("EndGame", 0.5f);
+            ChangeSprite(imagemAlert, spriteVisualAlertRight);
+            textVisualAlert.SetText("Parabéns, meu caro Gafanhoto!\n A resposta Correta é \n\n" + currentQuestion.GetAlternatives()[currentQuestion.GetRightAnswer()]);
         }
         else
-            Invoke("NewQuestion", 0.5f);
+        {
+            ChangeSprite(imagemAlert, spriteVisualAlertWrong);
+            textVisualAlert.SetText("Poxa vida, essa você não acertou!\n A resposta Correta é \n\n" + currentQuestion.GetAlternatives()[currentQuestion.GetRightAnswer()]);
+        }
     }
-    void GenerateQuestion()
+    void SetQuestion(int iQ)
     {
-        currentQuestion = allQuestionScriptableObj[questionPosition];
-
+        currentQuestion = allQuestionScriptableObj[iQ];
         statementText.SetText(currentQuestion.GetStatements());
         string[] alternatives = currentQuestion.GetAlternatives();
         for (int i = 0; i < alternatives.Length; i++)
         {
-            // Coloca os texto das alternativas nos TextMeshPro que sao filho de cada um dos botoes de alternativas.
-            alternativeTextTMP[i].GetComponentInChildren<TextMeshProUGUI>().SetText(alternatives[i]);
+            var setAlternativeText =alternativeTextTMP[i].GetComponentInChildren<TextMeshProUGUI>();
+            setAlternativeText.SetText(alternatives[i]);
         }
     }
-    void NewQuestion()
+    public void NewQuestion()
     {
-        questionPosition++;
-        GenerateQuestion();
-        DefaultOptionButtons();
-        timer.Zerar();
+        index++;
+        if (index <= allQuestionScriptableObj.Length - 1)
+        {
+            screens[2].GetComponent<Canvas>().gameObject.SetActive(false);
+            SetQuestion(index);
+            DefaultOptionButtons();
+        }
+        else
+        {
+            EndGame();
+        }
+            
     }
+    /*
     public void RestartGame()
     {
         questionPosition = 0;
@@ -130,14 +161,14 @@ public class GameManager : MonoBehaviour
         screens[0].SetActive(true);
         screens[1].SetActive(false);
     }
+    */
     void EndGame()
     {
-        EndGameMessageTXT.SetText("Você acertou " + correctly_Answers + " questões de " + allQuestionScriptableObj.Length + "\n Parabéns!!! ");
-        screens[1].SetActive(true);
+        screens[3].SetActive(true);
+        screens[2].SetActive(false);
+        screens[1].SetActive(false);
         screens[0].SetActive(false);
-    }
-    void Update()
-    {
+        endGameMessageTXT.SetText("Você acertou " + points + " questões de " + allQuestionScriptableObj.Length + "\n Parabéns!!! ");
         
     }
 }

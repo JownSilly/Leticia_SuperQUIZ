@@ -56,4 +56,12 @@ public class Timer : MonoBehaviour
         slider.value = currentTime;
         isCount = true;
     }
+    public float GetMaxTime()
+    {
+        return maxTime;
+    }
+    public float GetCurrentTime()
+    {
+        return currentTime;
+    }
 }
